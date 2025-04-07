@@ -1,0 +1,11 @@
+spring.application.name: CrudJDBC
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/crud
+    username: user
+    password: password
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
