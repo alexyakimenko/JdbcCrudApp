@@ -11,6 +11,8 @@ public interface CoachRepository {
 
     Optional<Coach> findById(Long id);
 
+    List<Coach> findByField(String field, Object value);
+
     Coach save(Coach coach);
 
     Coach update(Coach coach);

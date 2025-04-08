@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class League {
+public class Player {
     private Long id;
     private String name;
+    private Long teamId;
 }

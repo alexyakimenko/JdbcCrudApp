@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class League {
+public class Match {
     private Long id;
-    private String name;
+    private Long homeTeamId;
+    private Long awayTeamId;
+    private Long matchId;
 }
