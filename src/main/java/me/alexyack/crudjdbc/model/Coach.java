@@ -10,5 +10,5 @@ import lombok.Data;
 public class Coach {
     private Long id;
     private String name;
-    private Long teamId;
+    private Team team;
 }

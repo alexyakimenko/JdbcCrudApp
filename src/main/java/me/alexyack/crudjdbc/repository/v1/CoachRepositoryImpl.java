@@ -2,7 +2,9 @@ package me.alexyack.crudjdbc.repository.v1;
 
 import lombok.RequiredArgsConstructor;
 import me.alexyack.crudjdbc.model.Coach;
+import me.alexyack.crudjdbc.model.Team;
 import me.alexyack.crudjdbc.repository.CoachRepository;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -21,9 +23,27 @@ public class CoachRepositoryImpl implements CoachRepository {
     @Override
     @Transactional
     public List<Coach> findAll() {
+        RowMapper<Coach> rowMapper = (rs, rowNum) -> {
+            Team team = Team.builder()
+                    .id(rs.getLong("team_id"))
+                    .name(rs.getString("team_name"))
+                    .build();
+            return Coach.builder()
+                    .id(rs.getLong("coach_id"))
+                    .name(rs.getString("coach_name"))
+                    .team(team)
+                    .build();
+        };
+
         return jdbcClient
-                .sql("select * from coaches")
-                .query(Coach.class)
+                .sql("""
+                    select c.id as coach_id,
+                           c.name as coach_name,
+                           t.id as team_id,
+                           t.name as team_name
+                    from coaches c join teams t on c.team_id = t.id
+                    """)
+                .query(rowMapper)
                 .list();
     }
 

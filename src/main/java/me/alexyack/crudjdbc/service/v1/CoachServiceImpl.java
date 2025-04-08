@@ -21,12 +21,7 @@ public class CoachServiceImpl implements CoachService {
 
     @Override
     public List<CoachDTO> getCoaches() {
-        return coachRepository.findAll().stream().map(
-                coach -> {
-                    var team = teamRepository.findById(coach.getTeamId()).orElse(null);
-                    return CoachDTO.from(coach, team);
-                }
-        ).toList();
+        return coachRepository.findAll().stream().map(CoachDTO::from).toList();
     }
 
     @Override
@@ -34,28 +29,24 @@ public class CoachServiceImpl implements CoachService {
         var coach = coachRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("Coach not found")
         );
-        var team = teamRepository.findById(coach.getTeamId()).orElse(null);
-        return CoachDTO.from(coach, team);
+        return CoachDTO.from(coach);
     }
 
     @Override
     public CoachDTO createCoach(CreateCoachDTO coachDTO) {
         var coach = coachRepository.save(CreateCoachDTO.toCoach(coachDTO));
-        var team = teamRepository.findById(coach.getTeamId()).orElse(null);
-        return CoachDTO.from(coach, team);
+        return CoachDTO.from(coach);
     }
 
     @Override
     public CoachDTO updateCoach(Long id, UpdateCoachDTO coachDTO) {
         var coach = coachRepository.update(UpdateCoachDTO.toCoach(coachDTO, id));
-        var team = teamRepository.findById(coach.getTeamId()).orElse(null);
-        return CoachDTO.from(coach, team);
+        return CoachDTO.from(coach);
     }
 
     @Override
     public CoachDTO deleteCoach(Long id) {
         var coach = coachRepository.delete(id);
-        var team = teamRepository.findById(coach.getTeamId()).orElse(null);
-        return CoachDTO.from(coach, team);
+        return CoachDTO.from(coach);
     }
 }

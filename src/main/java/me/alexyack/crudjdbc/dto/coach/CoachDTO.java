@@ -13,11 +13,11 @@ public class CoachDTO {
     public String name;
     public TeamDTO team;
 
-    public static CoachDTO from(Coach coach, Team team) {
+    public static CoachDTO from(Coach coach) {
         return CoachDTO.builder()
                 .id(coach.getId())
                 .name(coach.getName())
-                .team(TeamDTO.from(team))
+                .team(TeamDTO.from(coach.getTeam()))
                 .build();
     }
 }
