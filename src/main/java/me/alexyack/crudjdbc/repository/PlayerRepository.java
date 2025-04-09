@@ -8,8 +8,16 @@ import java.util.Optional;
 
 public interface PlayerRepository {
 
+    List<Player> findAll();
+
+    Optional<Player> findById(Long id);
+
     List<Player> findByIds(List<Long> ids);
 
     List<Player> findByField(String field, Object value);
+
+    Player save(Player player);
+
+    Player update(Player player);
 
 }

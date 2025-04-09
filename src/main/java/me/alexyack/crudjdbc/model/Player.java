@@ -13,4 +13,7 @@ public class Player {
     private Long id;
     private String name;
     private Long teamId;
+
+    private PlayerStatistics statistics;
+    private Team team;
 }

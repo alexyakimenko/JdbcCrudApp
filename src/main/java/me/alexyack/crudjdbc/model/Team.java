@@ -15,6 +15,8 @@ public class Team {
     private Long id;
     private String name;
     private Long leagueId;
+    private Long coachId;
+
     private League league;
     private Coach coach;
     private List<Player> players;

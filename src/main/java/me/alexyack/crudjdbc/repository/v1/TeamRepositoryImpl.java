@@ -8,6 +8,8 @@ import me.alexyack.crudjdbc.repository.PlayerRepository;
 import me.alexyack.crudjdbc.repository.TeamRepository;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,11 +52,27 @@ public class TeamRepositoryImpl implements TeamRepository {
         return team;
     }
 
+    @Override
+    @Transactional
+    public Team save(Team team) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcClient
+                .sql("insert into teams (name, coach_id, league_id) values (:name, :coachId, :leagueId) returning id")
+                .param("name", team.getName())
+                .param("coachId", team.getCoachId())
+                .param("leagueId", team.getLeagueId())
+                .update(keyHolder);
+
+        return findById(keyHolder.getKeyAs(Long.class)).orElseThrow(
+                () -> new IllegalStateException("Team with id " + team.getId() + " not found")
+        );
+    }
+
     private void getRelatedObjects(Team team) {
-        var coaches = coachRepository.findByField("team_id", team.getId());
-        if(!coaches.isEmpty()) {
-            team.setCoach(coaches.getFirst());
-        }
+        var coach = coachRepository.findById(team.getCoachId()).orElse(null);
+
+        team.setCoach(coach);
 
         var leagueId = team.getLeagueId();
 
@@ -72,6 +90,7 @@ public class TeamRepositoryImpl implements TeamRepository {
                 .id(rs.getLong("id"))
                 .name(rs.getString("name"))
                 .leagueId(rs.getLong("league_id"))
+                .coachId(rs.getLong("coach_id"))
                 .build();
     }
 }

@@ -1,7 +1,12 @@
 package me.alexyack.crudjdbc.service.v1;
 
 import lombok.RequiredArgsConstructor;
+import me.alexyack.crudjdbc.dto.team.CreateTeamDTO;
 import me.alexyack.crudjdbc.dto.team.TeamDTO;
+import me.alexyack.crudjdbc.model.Team;
+import me.alexyack.crudjdbc.repository.CoachRepository;
+import me.alexyack.crudjdbc.repository.LeagueRepository;
+import me.alexyack.crudjdbc.repository.PlayerRepository;
 import me.alexyack.crudjdbc.repository.TeamRepository;
 import me.alexyack.crudjdbc.service.TeamService;
 import org.springframework.stereotype.Service;
@@ -13,6 +18,9 @@ import java.util.List;
 public class TeamServiceImpl implements TeamService {
 
     private final TeamRepository teamRepository;
+    private final CoachRepository coachRepository;
+    private final LeagueRepository leagueRepository;
+    private final PlayerRepository playerRepository;
 
     @Override
     public List<TeamDTO> getTeams() {
@@ -24,6 +32,31 @@ public class TeamServiceImpl implements TeamService {
         var team = teamRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("Team not found")
         );
+        return TeamDTO.from(team);
+    }
+
+    @Override
+    public TeamDTO createTeam(CreateTeamDTO teamDTO) {
+
+        var coach = coachRepository.findById(teamDTO.getCoachId()).orElseThrow(
+                () -> new IllegalArgumentException("Coach not found")
+        );
+        var league = leagueRepository.findById(teamDTO.getLeagueId()).orElseThrow(
+                () -> new IllegalArgumentException("League not found")
+        );
+        var players = playerRepository.findByIds(teamDTO.getPlayerIds());
+
+        var team = teamRepository.save(CreateTeamDTO.toTeam(teamDTO));
+
+        players.forEach(player -> {
+            player.setTeamId(team.getId());
+            playerRepository.update(player);
+        });
+
+        team.setCoach(coach);
+        team.setLeague(league);
+        team.setPlayers(players);
+
         return TeamDTO.from(team);
     }
 }

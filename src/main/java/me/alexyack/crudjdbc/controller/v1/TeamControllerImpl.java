@@ -2,12 +2,10 @@ package me.alexyack.crudjdbc.controller.v1;
 
 import lombok.RequiredArgsConstructor;
 import me.alexyack.crudjdbc.controller.TeamController;
+import me.alexyack.crudjdbc.dto.team.CreateTeamDTO;
 import me.alexyack.crudjdbc.dto.team.TeamDTO;
 import me.alexyack.crudjdbc.service.TeamService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +28,13 @@ public class TeamControllerImpl implements TeamController {
             @PathVariable Long teamId
     ) {
         return teamService.getTeamById(teamId);
+    }
+
+    @Override
+    @PostMapping
+    public TeamDTO createTeam(
+            @RequestBody CreateTeamDTO teamDTO
+    ) {
+        return teamService.createTeam(teamDTO);
     }
 }

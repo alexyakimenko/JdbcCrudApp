@@ -4,11 +4,10 @@ import lombok.Builder;
 import lombok.Data;
 import me.alexyack.crudjdbc.dto.coach.CoachDTO;
 import me.alexyack.crudjdbc.dto.league.LeagueDTO;
-import me.alexyack.crudjdbc.dto.player.PlayerDTO;
+import me.alexyack.crudjdbc.dto.player.TeamPlayerDTO;
 import me.alexyack.crudjdbc.model.Team;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -17,7 +16,7 @@ public class TeamDTO {
     private String name;
     private CoachDTO coach;
     private LeagueDTO league;
-    private List<PlayerDTO> players;
+    private List<TeamPlayerDTO> players;
 
     public static TeamDTO from(Team team) {
         return TeamDTO.builder()
@@ -25,7 +24,7 @@ public class TeamDTO {
                 .name(team.getName())
                 .coach(CoachDTO.from(team.getCoach()))
                 .league(LeagueDTO.from(team.getLeague()))
-                .players(team.getPlayers().stream().map(PlayerDTO::from).toList())
+                .players(team.getPlayers().stream().map(TeamPlayerDTO::from).toList())
                 .build();
     }
 }

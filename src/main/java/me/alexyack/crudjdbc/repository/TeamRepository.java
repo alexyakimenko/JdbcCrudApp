@@ -1,5 +1,6 @@
 package me.alexyack.crudjdbc.repository;
 
+import me.alexyack.crudjdbc.dto.team.TeamDTO;
 import me.alexyack.crudjdbc.model.Team;
 
 import java.util.List;
@@ -10,5 +11,7 @@ public interface TeamRepository {
     List<Team> findAll();
 
     Optional<Team> findById(Long id);
+
+    Team save(Team team);
 
 }
