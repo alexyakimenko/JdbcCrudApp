@@ -1,5 +1,6 @@
 package me.alexyack.crudjdbc.controller.v1;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.alexyack.crudjdbc.controller.CoachController;
 import me.alexyack.crudjdbc.dto.coach.CoachDTO;
@@ -33,7 +34,7 @@ public class CoachControllerImpl implements CoachController {
     @Override
     @PostMapping
     public CoachDTO createCoach(
-            @RequestBody CreateCoachDTO coachDTO
+            @RequestBody @Valid CreateCoachDTO coachDTO
     ) {
         return coachService.createCoach(coachDTO);
     }

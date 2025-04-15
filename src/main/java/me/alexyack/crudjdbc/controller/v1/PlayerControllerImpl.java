@@ -1,5 +1,6 @@
 package me.alexyack.crudjdbc.controller.v1;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.alexyack.crudjdbc.controller.PlayerController;
 import me.alexyack.crudjdbc.dto.player.CreatePlayerDTO;
@@ -34,7 +35,7 @@ public class PlayerControllerImpl implements PlayerController {
     @Override
     @PostMapping
     public PlayerDTO createPlayer(
-            @RequestBody CreatePlayerDTO playerDTO
+            @RequestBody @Valid CreatePlayerDTO playerDTO
     ) {
         return playerService.createPlayer(playerDTO);
     }

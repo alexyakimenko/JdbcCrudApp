@@ -1,5 +1,6 @@
 package me.alexyack.crudjdbc.controller.v1;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.alexyack.crudjdbc.controller.TeamController;
 import me.alexyack.crudjdbc.dto.team.CreateTeamDTO;
@@ -33,7 +34,7 @@ public class TeamControllerImpl implements TeamController {
     @Override
     @PostMapping
     public TeamDTO createTeam(
-            @RequestBody CreateTeamDTO teamDTO
+            @RequestBody @Valid CreateTeamDTO teamDTO
     ) {
         return teamService.createTeam(teamDTO);
     }

@@ -1,5 +1,6 @@
 package me.alexyack.crudjdbc.controller.v1;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.alexyack.crudjdbc.controller.LeagueController;
 import me.alexyack.crudjdbc.dto.league.CreateLeagueDTO;
@@ -34,7 +35,7 @@ public class LeagueControllerImpl implements LeagueController {
     @Override
     @PostMapping
     public LeagueDTO createLeague(
-            @RequestBody CreateLeagueDTO leagueDTO
+            @RequestBody  @Valid CreateLeagueDTO leagueDTO
     ) {
         return leagueService.createLeague(leagueDTO);
     }
