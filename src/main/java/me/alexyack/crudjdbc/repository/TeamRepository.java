@@ -14,4 +14,6 @@ public interface TeamRepository {
 
     Team save(Team team);
 
+    Team update(Team team);
+
 }

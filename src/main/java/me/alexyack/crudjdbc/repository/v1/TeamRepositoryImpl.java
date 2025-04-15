@@ -69,6 +69,27 @@ public class TeamRepositoryImpl implements TeamRepository {
         );
     }
 
+    @Override
+    public Team update(Team team) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcClient
+                .sql("update teams set " +
+                        "name = :name, " +
+                        "coach_id = :coachId, " +
+                        "league_id = :leagueId " +
+                        "where id = :id returning id")
+                .param("name", team.getName())
+                .param("coachId", team.getCoachId())
+                .param("leagueId", team.getLeagueId())
+                .param("id", team.getId())
+                .update(keyHolder);
+
+        return findById(keyHolder.getKeyAs(Long.class)).orElseThrow(
+                () -> new IllegalStateException("Team with id " + team.getId() + " not found")
+        );
+    }
+
     private void getRelatedObjects(Team team) {
         var coach = coachRepository.findById(team.getCoachId()).orElse(null);
 

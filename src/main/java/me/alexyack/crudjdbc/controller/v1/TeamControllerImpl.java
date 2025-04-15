@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import me.alexyack.crudjdbc.controller.TeamController;
 import me.alexyack.crudjdbc.dto.team.CreateTeamDTO;
 import me.alexyack.crudjdbc.dto.team.TeamDTO;
+import me.alexyack.crudjdbc.dto.team.UpdateTeamDTO;
 import me.alexyack.crudjdbc.service.TeamService;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,5 +38,10 @@ public class TeamControllerImpl implements TeamController {
             @RequestBody @Valid CreateTeamDTO teamDTO
     ) {
         return teamService.createTeam(teamDTO);
+    }
+
+    @Override
+    public TeamDTO updateTeam(Long teamId, UpdateTeamDTO teamDTO) {
+        return teamService.updateTeam(teamId, teamDTO);
     }
 }

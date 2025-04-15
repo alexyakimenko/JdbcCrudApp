@@ -3,7 +3,7 @@ package me.alexyack.crudjdbc.service.v1;
 import lombok.RequiredArgsConstructor;
 import me.alexyack.crudjdbc.dto.team.CreateTeamDTO;
 import me.alexyack.crudjdbc.dto.team.TeamDTO;
-import me.alexyack.crudjdbc.model.Team;
+import me.alexyack.crudjdbc.dto.team.UpdateTeamDTO;
 import me.alexyack.crudjdbc.repository.CoachRepository;
 import me.alexyack.crudjdbc.repository.LeagueRepository;
 import me.alexyack.crudjdbc.repository.PlayerRepository;
@@ -56,6 +56,38 @@ public class TeamServiceImpl implements TeamService {
         team.setCoach(coach);
         team.setLeague(league);
         team.setPlayers(players);
+
+        return TeamDTO.from(team);
+    }
+
+    @Override
+    public TeamDTO updateTeam(Long id, UpdateTeamDTO teamDTO) {
+
+        var coach = coachRepository.findById(teamDTO.getCoachId()).orElseThrow(
+                () -> new IllegalArgumentException("Coach not found")
+        );
+        var league = leagueRepository.findById(teamDTO.getLeagueId()).orElseThrow(
+                () -> new IllegalArgumentException("League not found")
+        );
+
+        var oldPlayers = playerRepository.findByField("team_id", id);
+        var newPlayers = playerRepository.findByIds(teamDTO.getPlayerIds());
+
+        var team = teamRepository.update(UpdateTeamDTO.toTeam(teamDTO, id));
+
+        oldPlayers.forEach(player -> {
+            player.setTeamId(null);
+            playerRepository.update(player);
+        });
+
+        newPlayers.forEach(player -> {
+            player.setTeamId(team.getId());
+            playerRepository.update(player);
+        });
+
+        team.setCoach(coach);
+        team.setLeague(league);
+        team.setPlayers(newPlayers);
 
         return TeamDTO.from(team);
     }
