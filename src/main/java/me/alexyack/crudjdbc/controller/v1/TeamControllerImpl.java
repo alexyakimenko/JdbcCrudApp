@@ -44,4 +44,9 @@ public class TeamControllerImpl implements TeamController {
     public TeamDTO updateTeam(Long teamId, UpdateTeamDTO teamDTO) {
         return teamService.updateTeam(teamId, teamDTO);
     }
+
+    @Override
+    public TeamDTO deleteTeam(Long teamId) {
+        return teamService.deleteTeam(teamId);
+    }
 }

@@ -70,6 +70,7 @@ public class TeamRepositoryImpl implements TeamRepository {
     }
 
     @Override
+    @Transactional
     public Team update(Team team) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -88,6 +89,28 @@ public class TeamRepositoryImpl implements TeamRepository {
         return findById(keyHolder.getKeyAs(Long.class)).orElseThrow(
                 () -> new IllegalStateException("Team with id " + team.getId() + " not found")
         );
+    }
+
+    @Override
+    @Transactional
+    public Team delete(Long id) {
+        var team = findById(id).orElseThrow(
+                () -> new IllegalStateException("Team with id " + id + " not found")
+        );
+
+        getRelatedObjects(team);
+
+        team.getPlayers().forEach(player -> {
+            player.setTeamId(null);
+            playerRepository.update(player);
+            player.setTeamId(team.getId());
+        });
+
+        jdbcClient.sql("delete from teams where id = :id")
+                .param("id", id)
+                .update();
+
+        return team;
     }
 
     private void getRelatedObjects(Team team) {

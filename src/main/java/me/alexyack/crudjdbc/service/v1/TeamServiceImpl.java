@@ -91,4 +91,10 @@ public class TeamServiceImpl implements TeamService {
 
         return TeamDTO.from(team);
     }
+
+    @Override
+    public TeamDTO deleteTeam(Long id) {
+        var team = teamRepository.delete(id);
+        return TeamDTO.from(team);
+    }
 }

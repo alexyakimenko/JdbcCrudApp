@@ -23,4 +23,7 @@ public interface TeamController {
     @PutMapping(path = "/{teamId}")
     TeamDTO updateTeam(@PathVariable Long teamId, @RequestBody @Valid UpdateTeamDTO teamDTO);
 
+    @DeleteMapping(path = "/{teamId}")
+    TeamDTO deleteTeam(@PathVariable Long teamId);
+
 }
