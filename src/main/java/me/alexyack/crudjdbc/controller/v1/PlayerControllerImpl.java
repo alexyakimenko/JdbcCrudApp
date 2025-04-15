@@ -44,7 +44,7 @@ public class PlayerControllerImpl implements PlayerController {
     @PutMapping(path = "/{playerId}")
     public PlayerDTO updatePlayer(
             @PathVariable Long playerId,
-            @RequestBody UpdatePlayerDTO playerDTO
+            @RequestBody @Valid UpdatePlayerDTO playerDTO
     ) {
         return playerService.updatePlayer(playerId, playerDTO);
     }

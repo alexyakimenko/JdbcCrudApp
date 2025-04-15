@@ -43,7 +43,7 @@ public class CoachControllerImpl implements CoachController {
     @PutMapping(path = "/{coachId}")
     public CoachDTO updateCoach(
             @PathVariable Long coachId,
-            @RequestBody UpdateCoachDTO coachDTO
+            @RequestBody @Valid UpdateCoachDTO coachDTO
     ) {
         return coachService.updateCoach(coachId, coachDTO);
     }

@@ -44,7 +44,7 @@ public class LeagueControllerImpl implements LeagueController {
     @PutMapping(path = "/{leagueId}")
     public LeagueDTO updateLeague(
             @PathVariable Long leagueId,
-            @RequestBody UpdateLeagueDTO leagueDTO
+            @RequestBody @Valid UpdateLeagueDTO leagueDTO
     ) {
         return leagueService.updateLeague(leagueId, leagueDTO);
     }
